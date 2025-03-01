@@ -1,18 +1,3 @@
-// API URL dan API Key JSONBin
-const jsonBinApiUrl = "https://api.jsonbin.io/v3/b/67c30dafad19ca34f814956b"; // Ganti dengan Bin ID yang benar
-const jsonBinApiKey = "$2a$10$4IVrueRnTRtCL9ReuE76auMFdZvPf39mSB/tnFMSUu13ufsw6SP8u"; // Ganti dengan API Key JSONBin
-
-// API Key IMGBB untuk upload gambar
-const imgbbApiKey = "35cd7b4520a87c49333f50490f22b821";  // Ganti dengan API Key IMGBB kamu
-
-// Mengambil data dari localStorage yang menunjukkan login
-const loggedInUser = localStorage.getItem('loggedInUser');
-if (!loggedInUser) {
-    // Jika tidak ada data login, arahkan ke halaman login
-    window.location.href = "login.html";
-}
-
-// Menangani pengiriman form pengajuan
 document.getElementById('pengajuanForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -27,6 +12,12 @@ document.getElementById('pengajuanForm').addEventListener('submit', async functi
     const rekening = document.getElementById('rekening').value;
     const penghasilan = document.getElementById('penghasilan').value;
 
+    // Cek apakah semua input sudah diisi
+    if (!namaLengkap || !whatsapp || !fotoKTP || !fotoMemegangKTP || !fotoKKNPWP || !alamat || !pinjaman || !waktuPinjaman || !rekening || !penghasilan) {
+        alert('Mohon isi semua kolom yang diperlukan!');
+        return;
+    }
+
     // Upload foto ke IMGBB dan dapatkan URL gambar
     const uploadFoto = async (file) => {
         const formData = new FormData();
@@ -38,6 +29,9 @@ document.getElementById('pengajuanForm').addEventListener('submit', async functi
         });
 
         const data = await response.json();
+        if (data.status !== 200) {
+            throw new Error("Gagal mengupload gambar");
+        }
         return data.data.url;  // Mengembalikan URL gambar dari IMGBB
     };
 
@@ -103,6 +97,6 @@ document.getElementById('pengajuanForm').addEventListener('submit', async functi
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("Gagal menghubungkan ke server.");
+        alert("Gagal menghubungkan ke server atau mengupload gambar.");
     }
 });
