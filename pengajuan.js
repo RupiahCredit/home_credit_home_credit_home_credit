@@ -1,3 +1,18 @@
+// API URL dan API Key JSONBin
+const jsonBinApiUrl = "https://api.jsonbin.io/v3/b/67c30dafad19ca34f814956b"; // Ganti dengan Bin ID yang benar
+const jsonBinApiKey = "$2a$10$4IVrueRnTRtCL9ReuE76auMFdZvPf39mSB/tnFMSUu13ufsw6SP8u"; // Ganti dengan API Key JSONBin
+
+// API Key IMGBB untuk upload gambar
+const imgbbApiKey = "35cd7b4520a87c49333f50490f22b821";  // Ganti dengan API Key IMGBB kamu
+
+// Mengambil data dari localStorage yang menunjukkan login
+const loggedInUser = localStorage.getItem('loggedInUser');
+if (!loggedInUser) {
+    // Jika tidak ada data login, arahkan ke halaman login
+    window.location.href = "login.html";
+}
+
+// Menangani pengiriman form pengajuan
 document.getElementById('pengajuanForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -18,7 +33,7 @@ document.getElementById('pengajuanForm').addEventListener('submit', async functi
         return;
     }
 
-    // Upload foto ke IMGBB dan dapatkan URL gambar
+    // Fungsi untuk upload foto ke IMGBB dan mendapatkan URL gambar
     const uploadFoto = async (file) => {
         const formData = new FormData();
         formData.append('image', file);
@@ -36,7 +51,7 @@ document.getElementById('pengajuanForm').addEventListener('submit', async functi
     };
 
     try {
-        // Upload foto-foto
+        // Upload foto-foto jika ada
         const fotoKTPUrl = fotoKTP ? await uploadFoto(fotoKTP) : null;
         const fotoMemegangKTPUrl = fotoMemegangKTP ? await uploadFoto(fotoMemegangKTP) : null;
         const fotoKKNPWPUrl = fotoKKNPWP ? await uploadFoto(fotoKKNPWP) : null;
